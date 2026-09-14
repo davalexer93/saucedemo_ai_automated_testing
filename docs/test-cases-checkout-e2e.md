@@ -1,0 +1,12 @@
+# Matriz de Casos de Prueba — Flujo de Compra E2E (SauceDemo)
+
+> Generado a partir del prompt definido en [`.github/prompts/PROMPTS.md`](../.github/prompts/PROMPTS.md).
+> Estos casos son el punto de partida para la automatización con **Playwright + TypeScript**.
+
+**Aplicación bajo prueba:** https://www.saucedemo.com/
+
+| ID del caso de prueba | Feature / Enunciado del caso de prueba | Precondiciones | Escenario de prueba (Gherkin) |
+|---|---|---|---|
+| TC-01 | Happy Path: Compra exitosa E2E (Login → Agregar producto → Checkout → Confirmación) | El usuario cuenta con credenciales válidas (`standard_user` / `secret_sauce`) y accede a `https://www.saucedemo.com/` | **Given** el usuario está en la página de login de SauceDemo<br>**When** ingresa el usuario "standard_user" y la contraseña "secret_sauce" y hace clic en "Login"<br>**And** en la página de productos hace clic en "Add to cart" sobre un producto listado<br>**And** hace clic en el ícono del carrito<br>**And** hace clic en "Checkout"<br>**And** completa "First Name", "Last Name" y "Zip/Postal Code" con datos válidos y hace clic en "Continue"<br>**And** hace clic en "Finish"<br>**Then** se muestra la página "Checkout: Complete!" con el mensaje "Thank you for your order!" |
+| TC-02 | Escenario de error: Login con usuario bloqueado (locked_out_user) | El usuario `locked_out_user` existe en el sistema pero su cuenta se encuentra bloqueada; el usuario accede a `https://www.saucedemo.com/` | **Given** el usuario está en la página de login de SauceDemo<br>**When** ingresa el usuario "locked_out_user" y la contraseña "secret_sauce" y hace clic en "Login"<br>**Then** el sistema no permite el acceso a pesar de que las credenciales son correctas<br>**And** se muestra el mensaje de error "Epic sadface: Sorry, this user has been locked out." |
+| TC-03 | Escenario límite: Intento de checkout con el carrito vacío | El usuario ha iniciado sesión exitosamente con `standard_user` / `secret_sauce` y no ha agregado productos al carrito | **Given** el usuario ha iniciado sesión y se encuentra en la página de productos<br>**When** hace clic en el ícono del carrito sin haber agregado productos<br>**Then** se muestra la página del carrito vacía (sin ítems listados)<br>**And** al hacer clic en "Checkout" el sistema permite continuar al formulario de información sin ítems asociados, evidenciando la ausencia de validación de carrito vacío |
